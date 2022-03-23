@@ -1,0 +1,8 @@
+
+.list{
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  column-gap: 20px;
+  row-gap: 20px;
+}
