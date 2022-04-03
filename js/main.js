@@ -1,97 +1,95 @@
-var elList = document.querySelector(".list");
+const elList = document.querySelector(".list");
+const elBookmarkList = document.querySelector(".bookmark-list");
 
+const bookmark = [];
 
-
-function renderGenes(arr , element){
-
-  var renderGeners = [];
-
-  arr.forEach((film) => {
-
-    film.genres.forEach(genre => {
-      if(!renderGeners.includes(genre)){
-        renderGeners.push(genre)
-      }
-    })
-  })
-
-  renderGeners.forEach(genre => {
-    const newOption = document.createElement("option");
-    newOption.value = genre;
-    newOption.textContent = genre;
-    element.appendChild(newOption);
-  })
-
-}
-
-function renderFilms(arr, element){
+function renderBookmark(arr ,  element){
   element.innerHTML = "";
 
-  arr.forEach(film =>{
-    var newItem = document.createElement("li");
-    var newImg = document.createElement("img");
-    var newHeading = document.createElement("h3");
-    var newText = document.createElement("p");
-    var newTime = document.createElement("time");
-    var newSubList = document.createElement("ul");
+  arr.forEach(bookmark => {
+    const newItem = document.createElement("li");
+    const newBookmarkBtn = document.createElement("button");
 
+    newItem.textContent= bookmark.title;
+    newItem.classList.add("list__sub-item")
+    newBookmarkBtn.textContent= "Remove";
+    newBookmarkBtn.type = "button";
+    newBookmarkBtn.classList.add("remove-button");
+    newBookmarkBtn.dataset.filmId = bookmark.id;
 
-    newHeading.textContent = film.title;
-    newText.textContent = film.overview.split(" ").slice(0 ,10).join(" ") + "...";
-    newTime.textContent = dateFormat(film.release_date);
-
-    for(var genre of film.genres){
-      var newSubItem = document.createElement("li");
-      newSubItem.textContent = genre;
-      newSubList.appendChild(newSubItem);
-    }
-
-    newItem.setAttribute("class", "list__item");
-    newImg.setAttribute("src", film.poster);
-    newImg.setAttribute("class", "list__img");
-    newText.setAttribute("class", "list__text");
-    newTime.setAttribute("datetime", "2022-03-12");
-
-
-
-    newItem.appendChild(newImg);
-    newItem.appendChild(newHeading);
-    newItem.appendChild(newText);
-    newItem.appendChild(newTime);
-    newItem.appendChild(newSubList);
-
+    newItem.appendChild(newBookmarkBtn);
     element.appendChild(newItem);
 
-  })
 
-
-
+  });
 }
 
+elBookmarkList.addEventListener("click", evt => {
+
+  const isDeleteBtn = evt.target.matches(".remove-button");
+
+  if(isDeleteBtn){
+    const btnId = evt.target.dataset.filmId;
+
+    const findIndexBookmark = bookmark.findIndex(e => e.id === btnId);
 
 
 
-form.addEventListener("submit", evt =>{
-  evt.preventDefault();
+    bookmark.splice(findIndexBookmark ,1);
 
-  const selectVal = select.value;
-
-  let filterFilms = selectVal == "all" ? films : films.filter(element => element.genres.includes(selectVal))  ;
-
-  // if(selectVal === "all"){
-  //   filterFilms = films;
-  // }else{
-  //   filterFilms = films.filter(element => element.genres.includes(selectVal));
-  // }
+    renderBookmark(bookmark , elBookmarkList);
 
 
 
-  renderFilms(filterFilms, elList);
+  }
 
 
 })
 
 
-renderFilms(films, elList);
-renderGenes(films , select);
 
+
+
+for(const film of films){
+
+  const newItem = document.createElement("li");
+  const newHeading = document.createElement("h3");
+  const newImg = document.createElement("img");
+  const newText = document.createElement("p");
+  const newBtn = document.createElement("button");
+
+  newBtn.textContent= "Bookmark";
+  newHeading.textContent = film.title;
+  newText.textContent = film.overview.split(" ").slice(0,20).join(" ") + " ...";
+
+  newItem.setAttribute("class", "list__item");
+  newImg.setAttribute("src", film.poster);
+  newImg.setAttribute("class", "list__img");
+  newBtn.setAttribute("class", "list__bookmark-btn");
+  newBtn.dataset.filmId = film.id;
+
+  newItem.appendChild(newImg);
+  newItem.appendChild(newHeading);
+  newItem.appendChild(newText);
+  newItem.appendChild(newBtn);
+
+
+  elList.appendChild(newItem);
+
+}
+
+elList.addEventListener("click" , evt => {
+
+  if(evt.target.matches(".list__bookmark-btn")){
+    const bookmarkBtnId = evt.target.dataset.filmId;
+
+    const findFilms = films.find(e => e.id === bookmarkBtnId);
+
+    if(!bookmark.includes(findFilms)){
+      bookmark.push(findFilms);
+
+      renderBookmark(bookmark , elBookmarkList);
+    }
+  };
+
+})
