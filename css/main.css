@@ -28,7 +28,6 @@ body{
   background-color: beige;
 }
 .list__sub-item{
-  /* width: 300px; */
   margin-bottom: 10px;
   padding: 10px;
   background-color:coral;
@@ -37,6 +36,23 @@ body{
 
 .list__img{
   width: 100%;
+}
+
+.list__bookmark-btn{
+  margin-top: 20px;
+  margin-right: 20px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background-color: coral;
+}
+
+.list__modal-btn{
+  margin-top: 20px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background-color: cadetblue;
 }
 
 .remove-button{

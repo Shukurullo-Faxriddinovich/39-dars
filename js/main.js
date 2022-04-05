@@ -1,7 +1,9 @@
 const elList = document.querySelector(".list");
 const elBookmarkList = document.querySelector(".bookmark-list");
+const localFilm = JSON.parse.window.localStorage.getItem("list");
+const list = localFilm || [];
 
-const bookmark = [];
+// const bookmark = [];
 
 function renderBookmark(arr ,  element){
   element.innerHTML = "";
@@ -9,14 +11,16 @@ function renderBookmark(arr ,  element){
   arr.forEach(bookmark => {
     const newItem = document.createElement("li");
     const newBookmarkBtn = document.createElement("button");
+   
 
     newItem.textContent= bookmark.title;
     newItem.classList.add("list__sub-item")
-    newBookmarkBtn.textContent= "Remove";
+    newBookmarkBtn.textContent = "Remove";
     newBookmarkBtn.type = "button";
     newBookmarkBtn.classList.add("remove-button");
     newBookmarkBtn.dataset.filmId = bookmark.id;
-
+    
+    
     newItem.appendChild(newBookmarkBtn);
     element.appendChild(newItem);
 
@@ -38,12 +42,7 @@ elBookmarkList.addEventListener("click", evt => {
     bookmark.splice(findIndexBookmark ,1);
 
     renderBookmark(bookmark , elBookmarkList);
-
-
-
   }
-
-
 })
 
 
@@ -57,22 +56,26 @@ for(const film of films){
   const newImg = document.createElement("img");
   const newText = document.createElement("p");
   const newBtn = document.createElement("button");
+  const newModalBtn = document.createElement("button");
+
 
   newBtn.textContent= "Bookmark";
   newHeading.textContent = film.title;
   newText.textContent = film.overview.split(" ").slice(0,20).join(" ") + " ...";
+  newModalBtn.textContent = "More";
 
   newItem.setAttribute("class", "list__item");
   newImg.setAttribute("src", film.poster);
   newImg.setAttribute("class", "list__img");
   newBtn.setAttribute("class", "list__bookmark-btn");
   newBtn.dataset.filmId = film.id;
+  newModalBtn.setAttribute("class", "list__modal-btn");
 
   newItem.appendChild(newImg);
   newItem.appendChild(newHeading);
   newItem.appendChild(newText);
   newItem.appendChild(newBtn);
-
+  newItem.appendChild(newModalBtn);
 
   elList.appendChild(newItem);
 
@@ -91,5 +94,6 @@ elList.addEventListener("click" , evt => {
       renderBookmark(bookmark , elBookmarkList);
     }
   };
+  window.localStorage.setItem("list", JSON.stringify(films));
 
 })
